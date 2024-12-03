@@ -14,8 +14,8 @@ class WordController extends Controller
         // Validate the request parameters
         $validated = $request->validate([
             'word' => 'required|string|max:255',
-            'id' => 'required|exists:users,id', // User ID must exist in the database
-            'deckID' => 'required|exists:decks,id', // Deck ID must exist in the database
+            'user_id' => 'required|exists:users,id', // User ID must exist in the database
+            'deck_id' => 'required|exists:decks,id', // Deck ID must exist in the database
         ]);
 
         // Check if the word already exists in the database
@@ -24,7 +24,7 @@ class WordController extends Controller
         if (!$word) {
             // Word doesn't exist, fetch its data from OpenAI
             $wordData = $this->fetchWordFromOpenAI($validated['word']);
-
+dd($wordData);
             if (!$wordData) {
                 // If OpenAI fails to return valid data
                 return response()->json([
@@ -37,7 +37,7 @@ class WordController extends Controller
         }
 
         // Associate the word with the deck without duplicating associations
-        $deck = Deck::find($validated['deckID']);
+        $deck = Deck::find($validated['deck_id']);
         $deck->words()->syncWithoutDetaching([$word->id]);
 
         // Return a success response with the word details

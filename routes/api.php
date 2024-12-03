@@ -11,7 +11,7 @@ Route::get('/deck/{id}', [DeckController::class, 'show'])->middleware('auth:sanc
 
 
 
-Route::middleware('auth:sanctum')->post('/word', [WordController::class, 'create']);
+Route::post('/words', [WordController::class, 'create'])->middleware('auth:sanctum');
 
 Route::get('/user', function (Request $request) {
     return $request->user();

@@ -11,14 +11,18 @@ class GoogleAuthController extends Controller
 {
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
-    public function handleGoogleCallback(Request $request)
+    public function handleGoogleCallback()
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
 
+            // Log the response (for debugging)
+            logger('Google User:', (array) $googleUser);
+
+            // Process user authentication
             $user = User::updateOrCreate(
                 ['email' => $googleUser->getEmail()],
                 [
@@ -28,14 +32,16 @@ class GoogleAuthController extends Controller
                 ]
             );
 
+            // Generate Sanctum token
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'user' => $user,
                 'token' => $token,
-            ], 200);
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Authentication failed.'], 401);
+            logger('Error during Google OAuth callback:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }
