@@ -20,8 +20,8 @@ class Deck extends Model
         return $this->belongsTo(User::class);
     }
 
-    //public function words()
-    //{
-    //    return $this->hasMany(VocabularyWord::class); // Optional: if you have a related VocabularyWord model
-    //}
+    public function words()
+    {
+        return $this->belongsToMany(Word::class);
+    }
 }

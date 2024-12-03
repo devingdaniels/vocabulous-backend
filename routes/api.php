@@ -3,6 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\DeckController;
+use App\Http\Controllers\WordController;
+
+Route::post('/decks', [DeckController::class, 'createForUser'])->middleware('auth:sanctum');
+Route::get('/deck/{id}', [DeckController::class, 'show'])->middleware('auth:sanctum');
+
+
+
+Route::middleware('auth:sanctum')->post('/word', [WordController::class, 'create']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
