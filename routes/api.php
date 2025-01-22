@@ -6,6 +6,10 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DeckController;
 use App\Http\Controllers\WordController;
 
+Route::get('/hello', function () {
+    return 'Hello World';
+});
+
 Route::post('/decks', [DeckController::class, 'createForUser'])->middleware('auth:sanctum');
 Route::get('/deck/{id}', [DeckController::class, 'show'])->middleware('auth:sanctum');
 
