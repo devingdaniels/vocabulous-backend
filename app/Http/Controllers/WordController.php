@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Word;
 use App\Models\Deck;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Config;
 
 class WordController extends Controller
 {
@@ -55,21 +56,20 @@ dd($wordData);
      */
     private function fetchWordFromOpenAI($word)
     {
-        $apiKey = env('OPENAI_API_KEY'); // Fetch the OpenAI API key from .env
-
+        $apiKey = config('services.openapi.api_key'); // Fetch the OpenAI API key from .env
         $prompt = $this->createPrompt($word);
-
         // Make the HTTP request to OpenAI
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $apiKey,
             'Content-Type' => 'application/json',
-        ])->post(env('OPENAI_API_URL'), [
+
+        ])->post(config('services.openapi.api_url'), [
             'model' => 'gpt-4',
             'messages' => [
                 ['role' => 'system', 'content' => $prompt],
             ],
         ]);
-
+        dd($response);
         // Check if the request to OpenAI succeeded
         if ($response->failed()) {
             return null;

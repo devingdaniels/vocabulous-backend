@@ -23,7 +23,8 @@ class DeckController extends Controller
         // Create the deck associated with the user
         $deck = $user->decks()->create([
             'user_id'=>$validated['user_id'],
-            'name' => $validated['name']
+            'name' => $validated['name'],
+            'description' => $validated['description']
         ]);
 
         // Return a success response

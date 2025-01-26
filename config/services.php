@@ -41,4 +41,9 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'openapi' => [
+        'api_key' => env('OPENAI_API_KEY', 'default_key'),
+        'api_url' => env('OPENAI_API_URL', 'https://api.openai.com')
+    ],
+
 ];
