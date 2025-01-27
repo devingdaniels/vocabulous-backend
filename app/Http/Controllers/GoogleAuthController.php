@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 class GoogleAuthController extends Controller
 {
@@ -33,25 +33,11 @@ class GoogleAuthController extends Controller
                 ]
             );
 
-            // Generate Sanctum token
-            $token = $user->createToken('auth_token')->plainTextToken;
+            Auth::login($user);
+            request()->session()->regenerate();
+            logger('Session ID:', [session()->getId()]);
 
-            $cookie = cookie(
-                'auth_token',
-                $token,
-                60 * 24 * 7, // 7 days
-                '/',
-                '.vocabulous.xyz',
-                true, // Secure
-                true, // HttpOnly
-                false, // Raw
-                'Strict' // SameSite policy
-            );
-
-            return response()->json([
-                'user' => $user,
-                'token' => $token,
-            ])->cookie($cookie);
+            return Redirect::to(config('services.google.frontend'));
         } catch (\Exception $e) {
             logger('Error during Google OAuth callback:', ['error' => $e->getMessage()]);
             return response()->json(['error' => $e->getMessage()], 400);

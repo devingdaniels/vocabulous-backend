@@ -17,7 +17,12 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['https://vocabulous.xyz'],
+    'allowed_origins' => [
+        'http://vocabulouslocal.com',
+        'http://vocabulouslocal.com:3000',
+        'https://vocabulous.xyz',     // Production frontend domain
+    ],
+    'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,

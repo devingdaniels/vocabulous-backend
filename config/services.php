@@ -39,11 +39,16 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
+        'frontend' => env('FRONTEND_AUTH_REDIRECT'),
     ],
 
     'openapi' => [
         'api_key' => env('OPENAI_API_KEY', 'default_key'),
         'api_url' => env('OPENAI_API_URL', 'https://api.openai.com')
     ],
+
+    'session' => [
+        'domain' => env('SESSION_DOMAIN','.vocabulouslocal.com')
+    ]
 
 ];
